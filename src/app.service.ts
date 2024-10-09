@@ -5,9 +5,9 @@ import { EnvironmentService } from './environment/environment.service';
 export class AppService {
 
   @Inject()
-  private readonly environment: EnvironmentService;
+  private readonly env: EnvironmentService;
 
   getHello(): string {
-    return 'Hello World!' + this.environment.APP_PORT;
+    return 'Hello World!' + this.env.APP_PORT;
   }
 }

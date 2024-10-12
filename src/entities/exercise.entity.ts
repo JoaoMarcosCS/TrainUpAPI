@@ -14,7 +14,7 @@ export class Exercise {
     @Column({ type: "int", default: 0 })
     repetitios: number;// numero de repetições
 
-    @Column({type: "decimal", nullable: true})
+    @Column({type: "decimal", nullable: true, default: 1})
     weight?: number;
 
     @Column({type: "interval", nullable: true})

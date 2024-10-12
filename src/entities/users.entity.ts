@@ -26,6 +26,6 @@ export class User extends BasicEntity {
     @Column({type: "date"})
     birthday: Date;
 
-    @Column({type: "text"})
-    about: string;
+    @Column({type: "text", nullable: true, default: "Nada escrito ainda :("})
+    about?: string;
 }

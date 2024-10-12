@@ -4,18 +4,12 @@ import helmet from 'helmet';
 import { limiter } from './config/policies/rate-limit.config';
 import { corsConfig } from './config/policies/cors.config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { swaggerConfig } from './config/swagger/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('API Example')
-    .setDescription('API description')
-    .setVersion('1.0')
-    .addTag('examples') // Adicione tags conforme necessário
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document); // Acesse a documentação em /api
 
   //proteção contra ataque XSS e outros

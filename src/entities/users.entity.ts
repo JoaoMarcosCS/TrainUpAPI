@@ -8,7 +8,7 @@ export class User extends BasicEntity {
     @Column({type: "text"})
     name: string;
 
-    @Column({type: "text"})
+    @Column({type: "text", unique: true})
     email: string;
 
     @Column({type: "text"})

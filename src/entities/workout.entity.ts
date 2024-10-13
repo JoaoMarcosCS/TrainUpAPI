@@ -16,6 +16,9 @@ export class Workout extends BasicEntity {
     @Column({ type: "enum", enum: Visibility, default: Visibility.PUBLIC })
     visibility: Visibility
 
+    @Column({ typeo: "boolean" default: false })
+    is_saved: booleana;
+
     @ManyToOne(() => User, { onDelete: "CASCADE" })
     user: User;
 

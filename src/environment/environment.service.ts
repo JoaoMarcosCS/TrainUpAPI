@@ -18,6 +18,13 @@ export class EnvironmentService {
     get APP_PORT():number {
         return this.config.get("APP_PORT")
     }
+    get GOOGLE_CLIENT_ID():number {
+        return this.config.get("GOOGLE_CLIENT_ID")
+    }
+
+    get GOOGLE_CLIENT_SECRET():number {
+        return this.config.get("GOOGLE_CLIENT_SECRET")
+    }
 
 
 }

@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { BasicEntity } from "./base-entity";
 import { Visibility } from "../enums/visibility.enum";
-import { User } from "./users.entity";
+import { User } from "./user.entity";
 import { Exercise } from "./exercise.entity";
 
 @Entity('workout')

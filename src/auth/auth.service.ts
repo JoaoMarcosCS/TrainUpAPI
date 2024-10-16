@@ -5,24 +5,25 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UserService) {}
 
-  async validateOAuthUser(user: CreateUserDto) {
-    
-    const existingUser = await this.usersService.findByGoogleId(user.googleId);
+  constructor(private userService: UserService) { }
+
+  async verifyOrCreateUser(user: any) {
+
+    const existingUser = await this.userService.findByGoogleId(user.googleId);
 
     if (existingUser) {
 
       return existingUser;
     }
 
-    const newUser = await this.usersService.create({
+    const newUser = await this.userService.create({
       googleId: user.googleId,
       email: user.email,
       name: user.name,
       avatarUrl: user.avatarUrl,
     });
 
-    return this.usersService.findByGoogleId(newUser.googleId);
+    return this.userService.findByGoogleId(newUser.googleId);
   }
 }

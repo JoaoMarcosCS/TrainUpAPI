@@ -22,20 +22,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
         const { googleId, displayName, emails, photos }: ProfileGoogle = profile;
 
-        const user: CreateUserDto= {
+        const user: any = {
             googleId: googleId,
             email: emails[0].value,
             name: displayName,
             avatarUrl: photos[0].value,
-            password: '', 
-            height: 0, 
-            weight: 0, 
-            gender: Gender.OTHER, 
-            birthday: new Date(), 
-            about: 'Nada escrito ainda :(',
+            // password: '', 
+            // height: 0, 
+            // weight: 0, 
+            // gender: Gender.OTHER, 
+            // birthday: new Date(), 
+            // about: 'Nada escrito ainda :(',
         };
 
-        const validatedUser = await this.authService.validateOAuthUser(user);
+        const validatedUser = await this.authService.verifyOrCreateUser(user);
         done(null, validatedUser);
 
     }

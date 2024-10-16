@@ -7,23 +7,31 @@ export class EnvironmentService {
     @Inject()
     private readonly config: ConfigService;
 
-    get DATABASE_CONNECTION_STRING():string {
+    get DATABASE_CONNECTION_STRING(): string {
         return this.config.get("DATABASE_CONNECTION_STRING")
     }
 
-    get DATABASE_PASSWORD():string {
+    get DATABASE_PASSWORD(): string {
         return this.config.get("DATABASE_PASSWORD")
     }
 
-    get APP_PORT():number {
+    get APP_PORT(): number {
         return this.config.get("APP_PORT")
     }
-    get GOOGLE_CLIENT_ID():number {
+    get GOOGLE_CLIENT_ID(): string {
         return this.config.get("GOOGLE_CLIENT_ID")
     }
 
-    get GOOGLE_CLIENT_SECRET():number {
+    get GOOGLE_CLIENT_SECRET(): string {
         return this.config.get("GOOGLE_CLIENT_SECRET")
+    }
+
+    get URL_CALLBACK_PROD(): string {
+        return this.config.get("URL_CALLBACK_PROD")
+    }
+
+    get URL_CALLBACK_LOCAL(): string {
+        return this.config.get("URL_CALLBACK_LOCAL")
     }
 
 

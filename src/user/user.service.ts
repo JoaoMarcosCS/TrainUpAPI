@@ -6,16 +6,8 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
 
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>;
+  @InjectRepository(User)
+  private readonly userRepository: Repository<User>;
 
-  async findByGoogleId(googleId: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { googleId } });
-  }
 
-  async create(userData: Partial<User>): Promise<User> {
-    const user = this.userRepository.create(userData);
-    
-    return this.userRepository.save(user);
-  }
 }

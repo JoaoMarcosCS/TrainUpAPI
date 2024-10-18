@@ -15,8 +15,11 @@ async function bootstrap() {
   //proteção contra ataque XSS e outros
   app.use(helmet());
 
+  //config para usar o oatuh
+  // app.use({'trust proxy': 1}); 
+
   //proteção contra DDOS
-  app.use(limiter);
+  // app.use(limiter);
 
   //proteção contra origens desconhecidas;
   app.enableCors(corsConfig);

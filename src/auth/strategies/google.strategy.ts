@@ -8,9 +8,12 @@ import { Inject } from '@nestjs/common';
 
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
-    constructor(private readonly authService: AuthService, private readonly environment: EnvironmentService) {
+    constructor(private readonly authService: AuthService,
+        @Inject(EnvironmentService) private readonly environment: EnvironmentService,
+    ) {
+ 
         super({
-            clientId: environment.GOOGLE_CLIENT_ID,
+            clientID: environment.GOOGLE_CLIENT_ID,
             clientSecret: environment.GOOGLE_CLIENT_SECRET,
             callbackURL: environment.URL_CALLBACK_LOCAL,
             scope: ['email', 'profile']

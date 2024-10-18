@@ -9,9 +9,6 @@ export class User extends BasicEntity {
     name: string;
 
     @Column({ type: "text", unique: true })
-    googleId: string;
-
-    @Column({ type: "text", unique: true })
     email: string;
 
     @Column({ type: "text" })

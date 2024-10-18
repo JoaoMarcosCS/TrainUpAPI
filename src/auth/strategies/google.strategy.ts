@@ -6,8 +6,9 @@ import { Inject } from '@nestjs/common';
 
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
-    constructor(private readonly authService: AuthService,
-        @Inject(EnvironmentService) private readonly environment: EnvironmentService,
+    constructor(
+        @Inject(EnvironmentService)
+        private readonly environment: EnvironmentService,
     ) {
         super({
             clientID: environment.GOOGLE_CLIENT_ID,
@@ -17,19 +18,19 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         })
     }
 
+    //método que será executado na rota 
+    //de callback após o google fornecer os parametros abaixo
     async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any>{
 
-        const { googleId, displayName, emails, photos } = profile;
-        console.log("\n Profile google received\n " + JSON.stringify(profile) + "\n End of profile received\n\n");
+        const { displayName, emails, photos } = profile;
+        
         const user: any = {
-            googleId: googleId,
             email: emails[0].value,
             name: displayName,
             avatarUrl: photos[0].value,
-            accessToken,
-
         };
 
+        //adicionará no request o objeto user, request.user
         done(null, user);
 
     }

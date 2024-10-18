@@ -34,5 +34,9 @@ export class EnvironmentService {
         return this.config.get("URL_CALLBACK_LOCAL")
     }
 
+    get URL_CALLBACK_CODESPACE(): string {
+        return this.config.get("URL_CALLBACK_CODESPACE")
+    }
+
 
 }

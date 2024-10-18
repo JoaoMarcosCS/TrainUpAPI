@@ -6,13 +6,13 @@ export class AuthController {
     @Get('google')
     @UseGuards(AuthGuard('google'))
     async googleAuth(@Req() req) {
-        // Inicia a autenticação com Google
+        // inicia a autenticação com Google
     }
 
     @Get('google/callback')
     @UseGuards(AuthGuard('google'))
     async googleAuthRedirect(@Req() req) {
-        // Após o login bem-sucedido, o Google redireciona aqui
+        // após o login bem-sucedido, é retornado o que está no return
         return req.user;
     }
 }

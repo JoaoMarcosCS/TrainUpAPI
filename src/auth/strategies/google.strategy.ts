@@ -4,8 +4,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { AuthService } from '../auth.service';
 import { EnvironmentService } from '../../environment/environment.service';
 import { ProfileGoogle } from '../types/user-profile.type';
-import { Gender } from 'src/enums/gender.enum';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { Inject } from '@nestjs/common';
 
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
@@ -27,16 +26,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             email: emails[0].value,
             name: displayName,
             avatarUrl: photos[0].value,
-            // password: '', 
-            // height: 0, 
-            // weight: 0, 
-            // gender: Gender.OTHER, 
-            // birthday: new Date(), 
-            // about: 'Nada escrito ainda :(',
         };
 
-        const validatedUser = await this.authService.verifyOrCreateUser(user);
-        done(null, validatedUser);
+        // const validatedUser = await this.authService.verifyOrCreateUser(user);
+        done(null, user);
 
     }
 }

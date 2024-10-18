@@ -38,5 +38,13 @@ export class EnvironmentService {
         return this.config.get("URL_CALLBACK_CODESPACE")
     }
 
+    get JWT_EXPIRES(): string {
+        return this.config.get("JWT_EXPIRES")
+    }
+
+    get JWT_SECRET(): string {
+        return this.config.get("JWT_SECRET")
+    }
+
 
 }

@@ -8,5 +8,7 @@ export const environmentSchema = Joi.object({
     GOOGLE_CLIENT_SECRET: Joi.string().required(),
     URL_CALLBACK_PROD: Joi.string().required(),
     URL_CALLBACK_LOCAL: Joi.string().required(),
-    URL_CALLBACK_CODESPACE: Joi.string().required()
+    URL_CALLBACK_CODESPACE: Joi.string().required(),
+    JWT_EXPIRES: Joi.string().required(),
+    JWT_SECRET: Joi.string().required()
 })

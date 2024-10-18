@@ -46,5 +46,12 @@ export class EnvironmentService {
         return this.config.get("JWT_SECRET")
     }
 
+    get REFRESH_JWT_SECRET(): string {
+        return this.config.get("REFRESH_JWT_SECRET")
+    }
+    get REFRESH_JWT_EXPIRES(): string {
+        return this.config.get("REFRESH_JWT_EXPIRES")
+    }
+
 
 }

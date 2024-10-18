@@ -10,5 +10,7 @@ export const environmentSchema = Joi.object({
     URL_CALLBACK_LOCAL: Joi.string().required(),
     URL_CALLBACK_CODESPACE: Joi.string().required(),
     JWT_EXPIRES: Joi.string().required(),
-    JWT_SECRET: Joi.string().required()
+    JWT_SECRET: Joi.string().required(),
+    REFRESH_JWT_EXPIRES: Joi.string().required(),
+    REFRESH_JWT_SECRET: Joi.string().required(),
 })

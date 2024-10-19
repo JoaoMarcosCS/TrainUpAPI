@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, document); // Acesse a documentação em /api
+  SwaggerModule.setup('doc', app, document); // Acesse a documentação em /doc
 
   //proteção contra ataque XSS e outros
   app.use(helmet());

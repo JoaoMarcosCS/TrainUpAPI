@@ -5,9 +5,10 @@ import { EnvironmentModule } from './environment/environment.module';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { FeatureModule } from './feature/feature.module';
 
 @Module({
-  imports: [ EnvironmentModule, DatabaseModule, UserModule, AuthModule ],
+  imports: [ EnvironmentModule, DatabaseModule, UserModule, AuthModule, FeatureModule ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -11,23 +11,26 @@ export class AuthController {
         private readonly authService: AuthService,
     ) { }
 
-    @Public()
+    
     @Get('google')
+    // @Public()
     @UseGuards(AuthGuard('google'))
     async googleAuth(@Req() req) {
         // inicia a autenticação com Google
     }
 
-    @Public()
+    
     @Get('google/callback')
+    // @Public()
     @UseGuards(AuthGuard('google'))
     async googleAuthRedirect(@Req() req) {
         // após o login bem-sucedido, é retornado o que está no return da strategy do google
         return req.user;
     }
 
-    @Public()
+    
     @Post("/signin")
+    // @Public()
     async signIn(
         @Request() req
     ) {

@@ -3,39 +3,69 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { AuthService } from '../auth.service';
 import { EnvironmentService } from '../../environment/environment.service';
 import { Inject } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import { plainToClass } from 'class-transformer';
+import { FindUserByEmailQuery } from 'src/user/queries/find-user-by-email/find-user-by-email.query';
 
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
     constructor(
         @Inject(EnvironmentService)
         private readonly environment: EnvironmentService,
+        private readonly queryBus: QueryBus,
+        @Inject(AuthService)
+        private readonly authService: AuthService
     ) {
         super({
             clientID: environment.GOOGLE_CLIENT_ID,
             clientSecret: environment.GOOGLE_CLIENT_SECRET,
-            callbackURL: environment.URL_CALLBACK_CODESPACE,
+            callbackURL: environment.URL_CALLBACK_LOCAL,
             scope: ['email', 'profile']
         })
     }
 
     //método que será executado na rota 
     //de callback após o google fornecer os parametros abaixo
-    async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any>{
+    async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
 
         const { displayName, emails, photos } = profile;
-        
-        const user: any = {
-            email: emails[0].value,
-            name: displayName,
-            avatarUrl: photos[0].value,
-        };
 
+        const query = plainToClass(FindUserByEmailQuery, emails[0]);
+
+        let action = {}
         //validar se existe um user com esse email
-        //se existir, gera um JWT com as informações
+        const user = await this.queryBus.execute(query);
+
+        console.log(console.log("\nUser\n\n" + JSON.stringify(user) + "\n\n\n"))
         //se naõ existir, manda uma flag no response pedindo para se cadastrar
+        if (!user) {
+
+            action = {
+                primaryAcess: true,
+                data: {
+                    name: displayName,
+                    email: emails[0].value,
+                    avatarUrl: photos[0].value
+                }
+            };
+
+            //adicionará no request o objeto user, request.user
+            done(null, action);
+        }
+        
+        //se existir, gera um JWT com as informações
+        const token = this.authService.signIn({ email: user.email, id: user.id });
+
+        console.log("\n\nToken\n" + JSON.stringify(token) + "\n\n\n")
+        
+        action: {
+            _accessToken: token;
+        }
+
+        console.log("\n\action\n" + JSON.stringify(action) + "\n\n\n")
 
         //adicionará no request o objeto user, request.user
-        done(null, user);
+        done(null, action);
 
     }
 }

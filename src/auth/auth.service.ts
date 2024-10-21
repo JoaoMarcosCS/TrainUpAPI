@@ -12,14 +12,16 @@ export class AuthService {
         private readonly environment: EnvironmentService
     ) { }
     
-    async signIn() {
+    async signIn({email, id}) {
         const payload = { };
-        const accessToken = this.jwtService.sign(payload);
+        console.log("\n\nEmail e id\n" + email + "\n\n\n" + id)
+        const accessToken = await this.jwtService.sign({email, id});
 
         // const refreshToken = this.jwtService.sign(payload, {
         //     expiresIn: this.environment.REFRESH_JWT_EXPIRES,
         //      secret: this.environment.REFRESH_JWT_SECRET
         // });
+        console.log("\n\nToken\n" + accessToken + "\n\n\n")
 
         return {
             // id: userId,

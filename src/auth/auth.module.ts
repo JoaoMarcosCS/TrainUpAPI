@@ -10,12 +10,15 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './guards/jwt/jwt.guard';
+import { QueryHandlers } from 'src/user/queries';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
     UserModule,
     EnvironmentModule,
-
+    CqrsModule,
+    ...QueryHandlers,
     JwtModule.registerAsync({
       imports: [EnvironmentModule],
       inject: [EnvironmentService],
@@ -34,10 +37,10 @@ import { JwtGuard } from './guards/jwt/jwt.guard';
     GoogleStrategy,
     JwtStrategy,
     RefreshJwtStrategy,
-    {
-      provide: APP_GUARD, //todas as rotas se tornam autenticadas com essa config
-      useClass: JwtGuard // método usado para autenticar as rotas
-    }
+    // {
+    //   provide: APP_GUARD, //todas as rotas se tornam autenticadas com essa config
+    //   useClass: JwtGuard // método usado para autenticar as rotas
+    // }
   ],
 })
 export class AuthModule { }

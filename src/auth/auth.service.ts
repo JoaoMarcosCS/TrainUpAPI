@@ -11,29 +11,29 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly environment: EnvironmentService
     ) { }
-
-    async signIn(userId: number) {
-        const payload: AuthJWTPayload = { sub: userId };
+    
+    async signIn() {
+        const payload = { };
         const accessToken = this.jwtService.sign(payload);
 
-        const refreshToken = this.jwtService.sign(payload, {
-            expiresIn: this.environment.REFRESH_JWT_EXPIRES,
-             secret: this.environment.REFRESH_JWT_SECRET
-        });
+        // const refreshToken = this.jwtService.sign(payload, {
+        //     expiresIn: this.environment.REFRESH_JWT_EXPIRES,
+        //      secret: this.environment.REFRESH_JWT_SECRET
+        // });
 
         return {
-            id: userId,
+            // id: userId,
             accessToken,
-            refreshToken
+            // refreshToken
         }
     }
 
-    async refresh(userId: number){
-        const payload: AuthJWTPayload = { sub: userId };
-        const refreshToken = this.jwtService.sign(payload);
-        return {
-            id: userId,
-            refreshToken
-        }
-    }
+    // async refresh(userId: number){
+    //     const payload: AuthJWTPayload = { sub: userId };
+    //     const refreshToken = this.jwtService.sign(payload);
+    //     return {
+    //         id: userId,
+    //         refreshToken
+    //     }
+    // }
 }

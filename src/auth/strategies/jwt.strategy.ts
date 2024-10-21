@@ -12,13 +12,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         private readonly environment: EnvironmentService,
     ) {
         super({
+            //de onde vamos extrair da requisição o JWT
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: environment.JWT_SECRET
+
+            //para validar o jwt vindo da requisição com a mesma chave secreta
+            secretOrKey: environment.JWT_SECRET,
+
+            //validar se o jwt está expirdado ou não
+            ignoreExpiration: false,
         })
     }
 
-    async validate(payload: AuthJWTPayload) {
-        
-        return { id: payload.sub }
+    //implementação do método de validação adicional após o jwt já ter sido validado
+    //no método super
+    async validate(payload: any) {
+
+        return { id: payload.sub }// esse objeto estará disponível no request.user
     }
 }

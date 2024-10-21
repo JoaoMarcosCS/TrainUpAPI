@@ -19,7 +19,7 @@ import { JwtGuard } from './guards/jwt/jwt.guard';
     JwtModule.registerAsync({
       imports: [EnvironmentModule],
       inject: [EnvironmentService],
-      useFactory: async (environment: EnvironmentService) => ({
+      useFactory: (environment: EnvironmentService) => ({
         secret: environment.JWT_SECRET,
         signOptions: {
           expiresIn: environment.JWT_EXPIRES
@@ -27,16 +27,17 @@ import { JwtGuard } from './guards/jwt/jwt.guard';
       }),
     }),
   ],
+  exports: [JwtStrategy, AuthService],
   controllers: [AuthController],
   providers: [
     AuthService,
-     GoogleStrategy,
-      JwtStrategy,
-       RefreshJwtStrategy,
-      {
-        provide: APP_GUARD, //todas as rotas se tornam autenticadas com essa config
-        useClass: JwtGuard // método usado para autenticar as rotas
-      }
-      ],
+    GoogleStrategy,
+    JwtStrategy,
+    RefreshJwtStrategy,
+    {
+      provide: APP_GUARD, //todas as rotas se tornam autenticadas com essa config
+      useClass: JwtGuard // método usado para autenticar as rotas
+    }
+  ],
 })
-export class AuthModule {}
+export class AuthModule { }

@@ -22,7 +22,7 @@ export class AuthController {
     @Get('google/callback')
     @UseGuards(AuthGuard('google'))
     async googleAuthRedirect(@Req() req) {
-        // após o login bem-sucedido, é retornado o que está no return
+        // após o login bem-sucedido, é retornado o que está no return da strategy do google
         return req.user;
     }
 
@@ -31,13 +31,13 @@ export class AuthController {
     async signIn(
         @Request() req
     ) {
-        return this.authService.signIn(req.user.id);
+        // return this.authService.signIn(req.user.id);
     }
 
-    @Public()
-    @UseGuards(RefreshJwtStrategy)
-    @Post("refresh")
-    async refreshToken(@Req() req){
-        return this.authService.refresh(req.user.id);
-    }
+    // @Public()
+    // @UseGuards(RefreshJwtStrategy)
+    // @Post("refresh")
+    // async refreshToken(@Req() req) {
+    //     return this.authService.refresh(req.user.id);
+    // }
 }

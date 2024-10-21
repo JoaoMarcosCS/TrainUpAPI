@@ -30,6 +30,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             avatarUrl: photos[0].value,
         };
 
+        //validar se existe um user com esse email
+        //se existir, gera um JWT com as informações
+        //se naõ existir, manda uma flag no response pedindo para se cadastrar
+
         //adicionará no request o objeto user, request.user
         done(null, user);
 

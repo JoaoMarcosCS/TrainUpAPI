@@ -3,8 +3,8 @@ import { CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } fr
 @Entity('basic-entity')
 export abstract class BasicEntity {
     
-    @PrimaryGeneratedColumn({type: "bigint"})
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @CreateDateColumn({
         type: "timestamp with time zone",

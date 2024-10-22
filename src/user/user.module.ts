@@ -11,6 +11,6 @@ import { CommandHandlers } from './commands';
   imports:[TypeOrmModule.forFeature([User]), CqrsModule],
   controllers: [UserController],
   providers: [UserService, ...QueryHandlers, ...CommandHandlers],
-  exports:[UserService, ...QueryHandlers, ...CommandHandlers]
+  exports:[UserService]
 })
 export class UserModule {}

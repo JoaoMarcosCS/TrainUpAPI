@@ -1,8 +1,5 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
-import { Public } from './decorators/public-route.decorator';
 import { OauthGoogleGuard } from './guards/oauth-google/oauth-google.guard';
 
 @Controller('auth')

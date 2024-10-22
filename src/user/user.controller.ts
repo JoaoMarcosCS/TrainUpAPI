@@ -3,7 +3,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { plainToClass } from 'class-transformer';
 import { FindUserByEmailQuery } from './queries/find-user-by-email/find-user-by-email.query';
 import { JwtGuard } from 'src/auth/guards/jwt/jwt.guard';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserCommand } from './commands/create-user/create-user.command';
+import { CreateUserDto } from './commands/create-user/create-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -19,11 +20,11 @@ export class UserController {
         @Body()
         dto: CreateUserDto// já válida o dto antes de chegar na função
     ) {
-        const command = plainToClass(CreateUserDto, dto);
+        const command = plainToClass(CreateUserCommand, dto);
 
         const id = await this.commandBus.execute(command);
 
-        if(!id) throw new NotFoundException("User ")
+        if (!id) throw new NotFoundException("User ")
     }
 
     @UseGuards(JwtGuard)
@@ -32,7 +33,7 @@ export class UserController {
         @Param('email')
         email: string
     ) {
-        const query = plainToClass(FindUserByEmailQuery, email);
+        const query = plainToClass(FindUserByEmailQuery, { email });
 
         //aqui o queryBus irá encontrar um handler associado a essa query
         const user = await this.queryBus.execute(query);

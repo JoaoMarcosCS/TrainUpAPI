@@ -19,7 +19,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         super({
             clientID: environment.GOOGLE_CLIENT_ID,
             clientSecret: environment.GOOGLE_CLIENT_SECRET,
-            callbackURL: environment.URL_CALLBACK_LOCAL,
+            callbackURL: environment.URL_CALLBACK_CODESPACE,
             scope: ['email', 'profile']
         })
     }
@@ -36,7 +36,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         //validar se existe um user com esse email
         const user = await this.queryBus.execute(query);
 
-        console.log(console.log("\nUser\n\n" + JSON.stringify(user) + "\n\n\n"))
         //se naõ existir, manda uma flag no response pedindo para se cadastrar
         if (!user) {
 
@@ -45,7 +44,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 data: {
                     name: displayName,
                     email: emails[0].value,
-                    avatarUrl: photos[0].value
+                    avatarUrl: photos[0].value,
+                    token: ""
                 }
             };
 
@@ -55,14 +55,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         
         //se existir, gera um JWT com as informações
         const token = this.authService.signIn({ email: user.email, id: user.id });
-
-        console.log("\n\nToken\n" + JSON.stringify(token) + "\n\n\n")
         
-        action: {
-            _accessToken: token;
+        action = {
+            primaryAcess: false,
+                data: {
+                    name: displayName,
+                    email: emails[0].value,
+                    avatarUrl: photos[0].value,
+                    token: token
+                }
         }
-
-        console.log("\n\action\n" + JSON.stringify(action) + "\n\n\n")
 
         //adicionará no request o objeto user, request.user
         done(null, action);

@@ -1,9 +1,10 @@
-import { ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { DeleteUserCommand } from "./delete-user.command";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { User } from "src/entities/user.entity";
 
+@CommandHandler(DeleteUserHandler)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, boolean | null>{
     
     constructor(

@@ -1,9 +1,10 @@
-import { ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { User } from "src/entities/user.entity";
 import { DataSource } from "typeorm";
 import { UpdateUserCommand } from "./update-user.command";
 
+@CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, boolean | null> {
 
     constructor(

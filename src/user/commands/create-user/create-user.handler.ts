@@ -1,9 +1,10 @@
-import { ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateUserCommand } from "./create-user.command";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { User } from "src/entities/user.entity";
 
+@CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand, string | null> {
 
     constructor(

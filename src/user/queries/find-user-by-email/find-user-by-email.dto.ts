@@ -9,6 +9,4 @@ export class FindUserByEmailDto{
     @Expose()
     email: string;
 
-    @Expose()
-    password: string;
 }

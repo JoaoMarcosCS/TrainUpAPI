@@ -7,8 +7,7 @@ import { plainToClass } from "class-transformer";
 import { FindUserByEmailQuery } from "./find-user-by-email.query";
 import { FindUserByEmailDto } from "./find-user-by-email.dto";
 
-@QueryHandler(FindUserByEmailQuery)//especifica qual query esse handler vai tratar
-//IQueryHandler< ClasseDosParametros, ClasseDeRetornoConsulta>
+@QueryHandler(FindUserByEmailQuery)
 export class FindUserByEmailHandler implements IQueryHandler<FindUserByEmailQuery, FindUserByEmailDto | null>{
     
     constructor(
@@ -18,16 +17,15 @@ export class FindUserByEmailHandler implements IQueryHandler<FindUserByEmailQuer
     
     async execute(query: FindUserByEmailQuery): Promise<FindUserByEmailDto | null> {
         
-        const data = await this.datasource.manager.find(User, {
+        const data = await this.datasource.manager.findOne(User, {
             where: {
                 email: query.email
             }
         })
 
-        //não há user com esse email
-        if(!data.length) return null
+        if(!data) return null
 
-        return plainToClass(FindUserByEmailDto, data[0]);
+        return plainToClass(FindUserByEmailDto, data);
     }
 
 }

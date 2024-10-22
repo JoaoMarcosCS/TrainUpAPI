@@ -1,5 +1,6 @@
 import { Gender } from "src/enums/gender.enum";
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsNumber, IsDate, Length, Matches } from 'class-validator';
+import { Type } from "class-transformer";
 
 export class CreateUserDto {
 
@@ -20,7 +21,7 @@ export class CreateUserDto {
 
     @IsNotEmpty({ message: 'A senha não pode estar vazia' })
     @IsString()
-    @Length(8, null, { message: 'A senha deve ter entre 8 e 20 caracteres' })
+    @Length(8, 20, { message: 'A senha deve ter entre 8 e 20 caracteres' })
     password: string;
 
     @IsNotEmpty({ message: 'A altura não pode estar vazia' })
@@ -36,6 +37,7 @@ export class CreateUserDto {
     gender: Gender;
 
     @IsNotEmpty({ message: 'A data de nascimento não pode estar vazia' })
+    @Type(() => Date)
     @IsDate({ message: 'A data de nascimento deve ser uma data válida' })
     birthday: Date;
 

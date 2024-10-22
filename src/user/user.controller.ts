@@ -23,7 +23,7 @@ export class UserController {
 
         const id = await this.commandBus.execute(command);
 
-        if(!id) throw new NotFoundException("Usu")
+        if(!id) throw new NotFoundException("User ")
     }
 
     @UseGuards(JwtGuard)

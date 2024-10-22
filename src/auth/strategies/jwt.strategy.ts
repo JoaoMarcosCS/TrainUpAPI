@@ -27,6 +27,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     //no método super
     async validate(payload: any) {
 
-        return { id: payload.sub }// esse objeto estará disponível no request.user
+        return { }// esse objeto estará disponível no request.user
     }
 }

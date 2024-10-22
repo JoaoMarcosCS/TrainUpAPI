@@ -1,41 +1,54 @@
-import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthJWTPayload } from './types/auth-jwt-payload';
 import { EnvironmentService } from 'src/environment/environment.service';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { QueryBus } from '@nestjs/cqrs';
+import { plainToClass } from 'class-transformer';
+import { FindUserByEmailQuery } from 'src/user/queries/find-user-by-email/find-user-by-email.query';
+import { comparePassword } from 'src/utils/compare-password.utils';
+import { FindUserByEmailDto } from 'src/user/queries/find-user-by-email/find-user-by-email.dto';
+import { ERROR_MESSAGES } from 'src/constants/error-message.constants';
 
 @Injectable()
 export class AuthService {
 
     constructor(
         private readonly jwtService: JwtService,
-        private readonly environment: EnvironmentService
+        private readonly environment: EnvironmentService,
+        @InjectDataSource()
+        private readonly dataSource: DataSource,
+        private readonly queryBus: QueryBus
     ) { }
     
-    async signIn({email, id}) {
-        const payload = { };
-        console.log("\n\nEmail e id\n" + email + "\n\n\n" + id)
+    async signInWithGoogle({email, id}) {
+        
         const accessToken = await this.jwtService.sign({email, id});
 
-        // const refreshToken = this.jwtService.sign(payload, {
-        //     expiresIn: this.environment.REFRESH_JWT_EXPIRES,
-        //      secret: this.environment.REFRESH_JWT_SECRET
-        // });
-        console.log("\n\nToken\n" + accessToken + "\n\n\n")
-
         return {
-            // id: userId,
             accessToken,
-            // refreshToken
         }
     }
 
-    // async refresh(userId: number){
-    //     const payload: AuthJWTPayload = { sub: userId };
-    //     const refreshToken = this.jwtService.sign(payload);
-    //     return {
-    //         id: userId,
-    //         refreshToken
-    //     }
-    // }
+    async signInWithPassword({ email, password}){
+
+        const query = plainToClass(FindUserByEmailQuery, email);
+        const user: FindUserByEmailDto = await this.queryBus.execute(query);
+
+        if(!user) throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
+
+        const isCorrectPassword = await comparePassword(password, user.password);
+
+        if(!isCorrectPassword) throw new BadRequestException(ERROR_MESSAGES.INCORRECT_PASSWORD)
+
+        const payload = {
+            email: user.email,
+            id: user.id,
+        }
+
+        const token = await this.jwtService.sign({...payload, type: "accesss"});
+
+    }
+
+    
 }

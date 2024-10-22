@@ -12,17 +12,17 @@ export class JwtGuard extends AuthGuard('jwt') {
         super();
     }
 
-    //validação para verifica se a tem o decorator da rota pública
-    canActivate(context: ExecutionContext) {
+    // //validação para verifica se a tem o decorator da rota pública
+    // canActivate(context: ExecutionContext) {
 
-        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-            context.getClass(),
-            context.getHandler()
-        ]);
+    //     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+    //         context.getClass(),
+    //         context.getHandler()
+    //     ]);
 
-        if (!isPublic) return false;
+    //     if (!isPublic) return false;
 
-        return super.canActivate(context)
+    //     return super.canActivate(context)
 
-    }
+    // }
 }

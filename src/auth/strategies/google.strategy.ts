@@ -6,6 +6,7 @@ import { Inject } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { plainToClass } from 'class-transformer';
 import { FindUserByEmailQuery } from 'src/user/queries/find-user-by-email/find-user-by-email.query';
+import { FindUserByEmailDto } from 'src/user/queries/find-user-by-email/find-user-by-email.dto';
 
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
@@ -19,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         super({
             clientID: environment.GOOGLE_CLIENT_ID,
             clientSecret: environment.GOOGLE_CLIENT_SECRET,
-            callbackURL: environment.URL_CALLBACK_CODESPACE,
+            callbackURL: environment.URL_CALLBACK_LOCAL,
             scope: ['email', 'profile']
         })
     }
@@ -29,17 +30,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
 
         const { displayName, emails, photos } = profile;
-
+        let userPreData = {}
+        
         const query = plainToClass(FindUserByEmailQuery, emails[0]);
+        
+        const user: FindUserByEmailDto = await this.queryBus.execute(query);
 
-        let action = {}
-        //validar se existe um user com esse email
-        const user = await this.queryBus.execute(query);
-
-        //se naõ existir, manda uma flag no response pedindo para se cadastrar
         if (!user) {
-
-            action = {
+            userPreData = {
                 primaryAcess: true,
                 data: {
                     name: displayName,
@@ -50,24 +48,23 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             };
 
             //adicionará no request o objeto user, request.user
-            done(null, action);
+            done(null, userPreData);
         }
         
-        //se existir, gera um JWT com as informações
-        const token = this.authService.signIn({ email: user.email, id: user.id });
+        const tokens = await this.authService.signInWithGoogle({ email: user.email, id: user.id });
         
-        action = {
+        userPreData = {
             primaryAcess: false,
                 data: {
                     name: displayName,
                     email: emails[0].value,
                     avatarUrl: photos[0].value,
-                    token: token
+                    accessToken: tokens.accessToken
                 }
         }
 
         //adicionará no request o objeto user, request.user
-        done(null, action);
+        done(null, userPreData);
 
     }
 }

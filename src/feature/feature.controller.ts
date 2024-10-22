@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { FeatureService } from './feature.service';
 import { CreateFeatureDto } from './dto/create-feature.dto';
 import { UpdateFeatureDto } from './dto/update-feature.dto';
 import { Public } from 'src/auth/decorators/public-route.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/guards/jwt/jwt.guard';
 
 @Controller('feature')
 export class FeatureController {
@@ -19,9 +21,10 @@ export class FeatureController {
     return "public route"
   }
 
-  @Get(':id')
+  @Get('private')
+  @UseGuards(JwtGuard)
   findOne(@Param('id') id: string) {
-    
+    return "private route";
   }
 
   @Patch(':id')

@@ -19,20 +19,6 @@ export class UserController {
     ) {
     }
 
-    @Post()
-    async cretae(
-        @Body()
-        dto: CreateUserDto
-    ) {
-        const command = plainToClass(CreateUserCommand, dto);
-
-        const id = await this.commandBus.execute(command);
-
-        if (!id) throw new NotFoundException(ERROR_MESSAGES.CANNOT_CREATE_USER);
-
-        return id;
-    }
-
     @UseGuards(JwtGuard)
     @Get("get-by-email/:email")
     async findOneUserByEmail(

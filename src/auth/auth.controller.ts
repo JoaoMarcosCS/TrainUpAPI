@@ -32,4 +32,7 @@ export class AuthController {
     ) {
         return await this.authService.signInWithPassword(body);
     }
+
+    @Post("/signup")// criar usuário
+
 }

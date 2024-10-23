@@ -30,14 +30,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
 
         const { displayName, emails, photos } = profile;
-        let userPreData = {}
         
+        //data retorna do login do google
+        let responsePreData = {}
+
         const query = plainToClass(FindUserByEmailQuery, emails[0]);
-        
+
         const user: FindUserByEmailDto = await this.queryBus.execute(query);
 
         if (!user) {
-            userPreData = {
+            responsePreData = {
                 primaryAcess: true,
                 data: {
                     name: displayName,
@@ -48,23 +50,23 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             };
 
             //adicionará no request o objeto user, request.user
-            done(null, userPreData);
+            done(null, responsePreData);
         }
-        
+
         const tokens = await this.authService.signInWithGoogle({ email: user.email, id: user.id });
-        
-        userPreData = {
+
+        responsePreData = {
             primaryAcess: false,
-                data: {
-                    name: displayName,
-                    email: emails[0].value,
-                    avatarUrl: photos[0].value,
-                    accessToken: tokens.accessToken
-                }
+            data: {
+                name: displayName,
+                email: emails[0].value,
+                avatarUrl: photos[0].value,
+                accessToken: tokens.accessToken
+            }
         }
 
         //adicionará no request o objeto user, request.user
-        done(null, userPreData);
+        done(null, responsePreData);
 
     }
 }

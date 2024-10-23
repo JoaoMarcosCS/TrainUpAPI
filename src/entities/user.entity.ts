@@ -11,7 +11,7 @@ export class User extends BasicEntity {
     @Column({ type: "text", unique: true })
     email: string;
 
-    @Column({ type: "text" })
+    @Column({ type: "text", nullable: true })
     avatarUrl: string;
 
     @Column({ type: "text" })

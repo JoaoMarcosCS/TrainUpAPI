@@ -21,8 +21,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, str
 
             const user = db.create(User, command);
 
-            await db.save(user);
-
             return user.id;
         })
     }

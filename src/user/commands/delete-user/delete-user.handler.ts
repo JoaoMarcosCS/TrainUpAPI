@@ -4,7 +4,7 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { User } from "src/entities/user.entity";
 
-@CommandHandler(DeleteUserHandler)
+@CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, boolean | null>{
     
     constructor(
@@ -23,9 +23,9 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, boo
 
             if(!user) return false;
 
-            db.delete(User, user);
+            const result = await db.delete(User, { id: user.id });
 
-            return true;
+            return result.affected > 0; //true se alguma linha foi afetada, false se nao foi
 
         })
     }

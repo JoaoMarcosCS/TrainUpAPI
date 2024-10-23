@@ -25,9 +25,9 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, boo
 
             db.merge(User, user, command);
 
-            await db.save(User, user);
+            const result = await db.save(User, user);
 
-            return true;
+            return result ? true : false;
         })
     }
 
